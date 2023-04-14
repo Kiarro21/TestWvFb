@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "378804385590",
+    "project_id": "wvfb-5d80b",
+    "storage_bucket": "wvfb-5d80b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378804385590:android:77cad81da230d25a156597",
+        "android_client_info": {
+          "package_name": "com.NoNameCompany.WvFb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "378804385590-qumre1bigrqdk2c3qvidt2cn5p12o84p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQn8vr5GhNinpw-8ba3_Jxb_7xtFFwrjs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "378804385590-qumre1bigrqdk2c3qvidt2cn5p12o84p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
