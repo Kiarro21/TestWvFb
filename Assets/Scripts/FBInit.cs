@@ -1,9 +1,9 @@
-using System;
-using System.Threading.Tasks;
-using UnityEngine;
 using Firebase;
 using Firebase.Extensions;
 using Firebase.RemoteConfig;
+using System;
+using System.Threading.Tasks;
+using UnityEngine;
 
 public class FBInit : MonoBehaviour
 {
@@ -12,19 +12,26 @@ public class FBInit : MonoBehaviour
 
     private void Awake()
     {
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
+        if (Application.internetReachability != NetworkReachability.NotReachable)
+            FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
+            {
+                dependencyStatus = task.Result;
+                if (dependencyStatus == DependencyStatus.Available)
+                {
+                    InitializeFirebase();
+                }
+                else
+                {
+                    Debug.LogError(
+                      "Could not resolve all Firebase dependencies: " + dependencyStatus);
+                }
+            });
+        else
         {
-            dependencyStatus = task.Result;
-            if (dependencyStatus == DependencyStatus.Available)
-            {
-                InitializeFirebase();
-            }
-            else
-            {
-                Debug.LogError(
-                  "Could not resolve all Firebase dependencies: " + dependencyStatus);
-            }
-        });
+            var controller = new GameObject("Controller");
+            controller.AddComponent<Controller>();
+            return;
+        }
     }
 
     void InitializeFirebase()
@@ -74,7 +81,6 @@ public class FBInit : MonoBehaviour
                 FirebaseRemoteConfig.DefaultInstance.ActivateAsync().ContinueWithOnMainThread(task =>
                 {
                     Debug.Log(String.Format("Remote data loaded and ready (last fetch time {0}).", info.FetchTime));
-                    Debug.Log(FirebaseRemoteConfig.DefaultInstance.GetValue("url").StringValue);
                     var controller = new GameObject("Controller");
                     controller.AddComponent<Controller>();
                 });

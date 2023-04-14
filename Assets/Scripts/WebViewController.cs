@@ -14,10 +14,8 @@ public class WebViewController : MonoBehaviour
         _webView.OnPageErrorReceived += OnPageErrorReceived;
         _webView.OnShouldClose += OnShouldClose;
 
-        _webView.SetShowSpinnerWhileLoading(true);
         _webView.Load(PlayerPrefs.GetString("url"));
         _webView.Show();
-        _webView.SetShowSpinnerWhileLoading(false);
     }
 
 
