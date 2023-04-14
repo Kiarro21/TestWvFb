@@ -3,6 +3,7 @@ using UnityEngine;
 public class WebViewController : MonoBehaviour
 {
     private UniWebView _webView;
+    private UniWebViewInterface _webViewInterface;
 
     void Start()
     {
@@ -16,6 +17,7 @@ public class WebViewController : MonoBehaviour
 
         _webView.Load(PlayerPrefs.GetString("url"));
         _webView.Show();
+        //UniWebViewInterface.SetShowSpinnerWhileLoading("", true);
     }
 
 
