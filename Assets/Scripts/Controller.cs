@@ -8,17 +8,13 @@ using UnityEngine.UI;
 
 public class Controller : MonoBehaviour
 {
-    private FirebaseManager _firebaseManager;
-    FirebaseRemoteConfig remoteConfig;
     private UniWebView _webView;
     [SerializeField] private GameObject _internetPopUp;
     [SerializeField] private Text _internetTextPopUp;
-    private string _url;
 
 
     private void Awake()
     {
-        //StartCoroutine(WaitBegin());
         if (PlayerPrefs.HasKey("url"))
         {
             if (Application.internetReachability == NetworkReachability.NotReachable)
@@ -46,15 +42,6 @@ public class Controller : MonoBehaviour
         }
     }
 
-    private void CreateFirebaseAsync()
-    {
-        var firebaseGameObject = new GameObject("FirebaseManager");
-        _firebaseManager = firebaseGameObject.AddComponent<FirebaseManager>();
-
-        //_firebaseManager.SetDefault();
-        //_firebaseManager.FetchRemoteConfigAsync();
-    }
-
     public void CreateWebView()
     {
         var webViewGameObject = new GameObject("UniWebView");
@@ -62,12 +49,20 @@ public class Controller : MonoBehaviour
         _webView.AddComponent<WebViewController>();
     }
 
+    private void GetPopUp()
+    {
+        _internetPopUp = GameObject.Find("InternerPopUp");
+        _internetTextPopUp = GameObject.Find("InternerPopUpText").GetComponent<Text>();
+    }
+
     private void ShowInternetAbsence()
     {
+        GetPopUp();
         _internetTextPopUp.text = "The application needs an internet connection to work";
-        _internetPopUp.SetActive(true);
+        _internetPopUp.GetComponent<Image>().color = new Color(0f, 0f, 0f, 85f);
         StartCoroutine(ApplicationClose());
     }
+
 
     private void CloseWebView()
     {
@@ -77,17 +72,7 @@ public class Controller : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        Destroy(_firebaseManager);
-        _firebaseManager = null;
         CloseWebView();
-    }
-
-    private IEnumerator WaitBegin()
-    {
-        Debug.Log("Some waiting before work");
-        _internetPopUp = GameObject.FindGameObjectWithTag("InternerPopUp");
-        _internetTextPopUp = GameObject.FindGameObjectWithTag("InternerPopUpText").GetComponent<Text>();
-        yield return new WaitForSeconds(5f);
     }
 
     private IEnumerator ApplicationClose()
