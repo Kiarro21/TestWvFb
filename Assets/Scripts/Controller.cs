@@ -50,7 +50,7 @@ public class Controller : MonoBehaviour
         _firebaseManager = firebaseGameObject.AddComponent<FirebaseManager>();
 
         //_firebaseManager.SetDefault();
-        _firebaseManager.FetchRemoteConfigAsync();
+        //_firebaseManager.FetchRemoteConfigAsync();
     }
 
     public void CreateWebView()
