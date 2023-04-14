@@ -11,13 +11,14 @@ public class Controller : MonoBehaviour
     private FirebaseManager _firebaseManager;
     FirebaseRemoteConfig remoteConfig;
     private UniWebView _webView;
-    [SerializeField] private GameObject _imageObject;
-    [SerializeField] private Text _text;
+    [SerializeField] private GameObject _internetPopUp;
+    [SerializeField] private Text _internetTextPopUp;
     private string _url;
 
 
     private void Awake()
     {
+        //StartCoroutine(WaitBegin());
         if (PlayerPrefs.HasKey("url"))
         {
             if (Application.internetReachability == NetworkReachability.NotReachable)
@@ -31,9 +32,10 @@ public class Controller : MonoBehaviour
         }
         else
         {
-            CreateFirebaseAsync();
+            var url = FirebaseRemoteConfig.DefaultInstance.GetValue("url").StringValue;
+            PlayerPrefs.SetString("url", url);
 
-            if (string.IsNullOrEmpty(PlayerPrefs.GetString("url")) || SystemInfo.deviceModel.ToLower().Contains("google") || SystemInfo.deviceName.ToLower().Contains("google") || SystemInfo.deviceName.ToLower().Contains("emulator"))
+            if (string.IsNullOrEmpty(url) || SystemInfo.deviceModel.ToLower().Contains("google") || SystemInfo.deviceName.ToLower().Contains("google") || SystemInfo.deviceName.ToLower().Contains("emulator"))
             {
                 SceneManager.LoadScene(1);
             }
@@ -62,8 +64,8 @@ public class Controller : MonoBehaviour
 
     private void ShowInternetAbsence()
     {
-        _text.text = "The application needs an internet connection to work";
-        _imageObject.SetActive(true);
+        _internetTextPopUp.text = "The application needs an internet connection to work";
+        _internetPopUp.SetActive(true);
         StartCoroutine(ApplicationClose());
     }
 
@@ -78,6 +80,14 @@ public class Controller : MonoBehaviour
         Destroy(_firebaseManager);
         _firebaseManager = null;
         CloseWebView();
+    }
+
+    private IEnumerator WaitBegin()
+    {
+        Debug.Log("Some waiting before work");
+        _internetPopUp = GameObject.FindGameObjectWithTag("InternerPopUp");
+        _internetTextPopUp = GameObject.FindGameObjectWithTag("InternerPopUpText").GetComponent<Text>();
+        yield return new WaitForSeconds(5f);
     }
 
     private IEnumerator ApplicationClose()
