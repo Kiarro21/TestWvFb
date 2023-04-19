@@ -3,7 +3,6 @@ using UnityEngine;
 public class WebViewController : MonoBehaviour
 {
     private UniWebView _webView;
-    private UniWebViewInterface _webViewInterface;
 
     void Start()
     {
@@ -14,10 +13,8 @@ public class WebViewController : MonoBehaviour
         _webView.OnOrientationChanged += OrientationChanging;
         _webView.OnPageErrorReceived += OnPageErrorReceived;
         _webView.OnShouldClose += OnShouldClose;
-
         _webView.Load(PlayerPrefs.GetString("url"));
         _webView.Show();
-        //UniWebViewInterface.SetShowSpinnerWhileLoading("", true);
     }
 
 
@@ -35,6 +32,8 @@ public class WebViewController : MonoBehaviour
     private void OnPageFinished(UniWebView webView, int statusCode, string url)
     {
         Debug.Log($"Page {url} is loaded with {statusCode} code");
+
+        webView.SetZoomEnabled(true);
     }
 
     void OnPageErrorReceived(UniWebView webView, int errorCode, string errorMessage)
@@ -51,6 +50,6 @@ public class WebViewController : MonoBehaviour
 
     private void OrientationChanging(UniWebView view, ScreenOrientation orientation)
     {
-        _webView.Frame = new Rect(0, 0, Screen.width, Screen.height);
+        view.Frame = new Rect(0, 0, Screen.width, Screen.height);
     }
 }

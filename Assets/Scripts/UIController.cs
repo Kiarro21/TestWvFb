@@ -7,11 +7,6 @@ public class UIController : MonoBehaviour
 {
     public GameObject _internetPopUp;
 
-    void Start()
-    {
-
-    }
-
     public void SetText(string text)
     {
         _internetPopUp.GetComponentInChildren<Text>().text = text;
